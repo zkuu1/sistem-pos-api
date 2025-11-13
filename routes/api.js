@@ -1,13 +1,18 @@
-import express from 'express';
-import authMiddleware from '../middleware/auth-middleware'
-import userController from '../controller/user-controller'
+const express = require('express');
+const { authMiddleware } = require('../middleware/auth-middleware');
+const userController = require('../controller/user-controller');
+const absensiController = require('../controller/absensi-controller');
 
-
-// user router
 const userRouter = express.Router();
-userRouter.use(authMiddleware);
-userRouter.get('/api/users/current', userController.get)
+const absensiRouter = express.Router();
 
-export {
-    userRouter
-}
+// hanya route ini yang perlu login
+userRouter.get('/api/users/current', authMiddleware, userController.get);
+
+
+absensiRouter.get('/api/absensi', authMiddleware, absensiController.absensi);
+
+module.exports = {
+  userRouter,
+  absensiRouter
+};

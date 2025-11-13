@@ -1,4 +1,4 @@
-const {responseError} = require('../error/response-error');
+const ResponseError = require('../error/response-error');
 
 
 
@@ -9,14 +9,13 @@ const errorMiddleware = async(err, req, res, next) => {
         return;
     }
 
-    if (err instanceof responseError) {
+    if (err instanceof ResponseError) {
         res.status(err.statusCode).json({
             errors: err.message
         });    
     }else {
-        res.status(500).json({
-            errors: err.message
-        }),end();    
+       res.end();
+   
     }
 }
 

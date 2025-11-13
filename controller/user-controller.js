@@ -27,17 +27,20 @@ const login = async (req, res, next) => {
 }
 
 const get = async (req, res, next) => {
-  const user = req.user.user;
   try {
-    const result = await userService.getUser(user) ;
+    // Ambil data user dari middleware auth
+    const user = req.user;
+
+    // Panggil service dengan nama user
+    const result = await userService.getUser(user.name);
+
     res.status(200).json({
-    data: result
-    })
+      data: result
+    });
   } catch (error) {
-    next(error)
+    next(error);
   }
-  
-}
+};
 
 //  Create new user
 const createUser = async (req, res) => {
@@ -94,7 +97,6 @@ const deleteUser = async (req, res) => {
 };
 
 module.exports = {
-  getAllUsers,
   register,
   login,
   createUser,

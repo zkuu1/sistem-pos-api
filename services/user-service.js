@@ -81,23 +81,25 @@ const loginUser = async (request) => {
   return updatedUser;
 };
 
-const getUser = async(name) => {
-    name = validate(getUserValidation, name);
-    const user = await prisma.findUnique({
-      where:{
-        name: user.name
-      },
-      select: {
-        name: true
-      }
-    })
+const getUser = async (name) => {
+  const request = validate(getUserValidation, { name });
 
-    if(!user) {
-      throw new ResponseError(404, "user not found")
+  const user = await prisma.user.findMany({
+    where: {
+      name: request.name
+    },
+    select: {
+      name: true,
     }
+  });
 
-    return user;
-}
+  if (!user) {
+    throw new ResponseError(404, "User not found");
+  }
+
+  return user;
+};
+
 
 module.exports = {
   registerUser,

@@ -4,19 +4,27 @@ const Logging = require('./logging');
 const dotenv = require('dotenv');
 
 // import router 
-const userRoutes = require('./routes/api');
-const absensiRoutes = require('./routes/absensi')
+const apiRouter = require('./routes/api');
+const publicApiRouter = require('./routes/public-api');
 const logRequest = require('./middleware/logs');
 
 dotenv.config();
 
+
 const web = express()
+// web.listen(process.env.PORT, () => {
+//     Logging.info(`Server is running on port ${process.env.PORT}`);
+// });
+web.use(logRequest);
 web.use(express.json())
-web.use(userRoutes.userRouter)
-web.use(absensiRoutes.absensiRouter)
+// export api router
+web.use(apiRouter.userRouter)
+web.use(apiRouter.absensiRouter)
+web.use(publicApiRouter.publicUserRouter)
+web.use(publicApiRouter.publicAbsensiRouter)
 
+web.use(errorMiddleware);
 
-
-web.listen(3000, () => {
-  Logging.info('localhost:3000');
-});
+module.exports = {
+    web
+}
