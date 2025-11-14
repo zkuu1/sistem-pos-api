@@ -3,11 +3,11 @@ const prisma = require('../client/prisma')
 async function main() {
   console.log('🌱 Seeding database...')
 
-  // delete data
-  await prisma.absensi.deleteMany()
-  await prisma.product.deleteMany()
-  await prisma.category.deleteMany()
-  await prisma.user.deleteMany()
+  // // delete data
+  // await prisma.absensi.deleteMany()
+  // await prisma.product.deleteMany()
+  // await prisma.category.deleteMany()
+  // await prisma.user.deleteMany()
 
   // add user
   const users = await prisma.user.createMany({

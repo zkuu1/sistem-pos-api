@@ -5,6 +5,7 @@ const ResponseError = require('../error/response-error');
 console.log('DEBUG: ResponseError =', ResponseError);
 
 
+// ===================== USER ABSENSI =====================
 const userAbsensi = async (request) => {
   try {
     const user = validate(AbsensiValidation, request);
@@ -19,26 +20,76 @@ const userAbsensi = async (request) => {
     });
 
     return {
-      status: 'success',
-      message: 'Absensi berhasil disimpan',
       data: absensi,
     };
   } catch (error) {
-    
-    if (error.name === 'ValidationError') {
-      throw new ResponseError(400, error.message);
-    }
-
-    // Prisma/database error
-    if (error.code) {
-      throw new ResponseError(500, `Database error: ${error.message}`);
-    }
-
-    // Error umum lainnya
-    throw new ResponseError(500, error.message || 'Terjadi kesalahan server');
+    handleError(error)
   }
 };
 
+// ===================== UPDATE ABSENSI =====================
+const updateAbsensi = async(request, id) => {
+  try {
+    const absensi = await validate(AbsensiValidation, request);
+    const update = await prisma.absensi.update({
+    where: { id:Number(id) }
+  })
+  return {
+    data: update
+  }
+  } catch (error) {
+    handleError(error)
+  }
+}
+
+// ===================== DELETE ABSENSI =====================
+const deleteAbsensi = async(id) => {
+  try {
+    const deleted = await prisma.absensi.delete({
+      where:{id:Number(id)}
+    })
+    return {
+      data: deleted
+    }
+  } catch (error) {
+
+    // Jika id tidak ditemukan di database
+        if (error.code === 'P2025') {
+          throw new ResponseError(404, 'Absensi tidak ditemukan');
+        }
+
+    handleError(error)
+  }
+}
+
+// ===================== GET ABSENSI =====================
+const getAbsensi = async(request) => {
+  try {
+     const get = await prisma.absensi.findMany();
+     return {
+        data: get
+     }
+  } catch (error) {
+     handleError(error)
+  }
+}
+
+// ===================== ERROR HANDLER GLOBAL =====================
+function handleError(error) {
+  if (error.name === 'ValidationError') {
+    throw new ResponseError(400, error.message);
+  }
+
+  if (error.code) {
+    throw new ResponseError(500, `Database error: ${error.message}`);
+  }
+
+  throw new ResponseError(500, error.message || 'Terjadi kesalahan server');
+}
+
 module.exports = {
   userAbsensi,
+  updateAbsensi,
+  deleteAbsensi,
+  getAbsensi
 };

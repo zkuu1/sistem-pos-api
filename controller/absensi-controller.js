@@ -1,11 +1,12 @@
 const absensiService = require('../services/absensi-service')
-const absensiModels = require('../models/absensi')
+
 
 // Send Data Absensi
 const absensi = async(req, res, next) => {
     try {
     const result = await absensiService.userAbsensi(req.body);
     res.status(200).json({
+        status: 'success',
         message: 'Successfully absensi',
         data: result})
 
@@ -14,10 +15,36 @@ const absensi = async(req, res, next) => {
     }
 }
 
+const updateAbsensi = async(req, res, next) => {
+    try {
+        const result = await absensiService.updateAbsensi(req.params.id, req.body)
+        res.status(200).json({
+            status: 'success',
+            message: 'update absensi successfully',
+            data: result
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+const deleteAbsensi = async (req, res, next) => {
+    try {
+        const result = await absensiService.deleteAbsensi(req.params.id);
+        res.status(200).json({
+            status: 'success',
+            message: 'delete absensi successfully',
+            data: result
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
 // Get Data Absensi
 const getAllAbsensi = async(req, res) => {
     try {
-        const result = await absensiModels.getAllAbsensi();
+        const result = await absensiService.getAbsensi(req.body);
         res.status(200).json({
         message: 'Successfully retrieved absensi',
         data: result
@@ -34,5 +61,7 @@ const getAllAbsensi = async(req, res) => {
 
 module.exports = {
     absensi,
+    updateAbsensi,
+    deleteAbsensi,
     getAllAbsensi
 }
