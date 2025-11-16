@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-  "start": "nodemon web.js",
-  "seed": "npx prisma db seed",
-  "test": "jest --runInBand"
-},
-
+    "start": "nodemon web.js",
+    "seed": "npx prisma db seed",
+    "test": "jest --runInBand"
+  },
   "prisma": {
     "seed": "node db/seeders.js"
   },
@@ -17,12 +16,18 @@
   "dependencies": {
     "@prisma/client": "^6.19.0",
     "bcryptjs": "^3.0.3",
+    "cloudinary": "^1.41.3",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "joi": "^18.0.1",
+    "multer": "^2.0.2",
+    "multer-storage-cloudinary": "^4.0.0",
     "mysql2": "^3.15.3",
     "nodemon": "^3.1.10",
     "prisma": "^6.19.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "uuid": "^13.0.0",
     "winston": "^3.18.3"
   },

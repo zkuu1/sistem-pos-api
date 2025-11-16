@@ -1,14 +1,35 @@
 const productService = require('../services/product-service');
+const fs = require('fs');
+const cloudinary = require('../utils/cloudinaryUpload');
 
 
 // ===================== ADD PRODUCT =====================
 const addProduct = async (req, res, next) => {
   try {
+    console.log("REQ.FILE:", req.file); // ⬅ cek dulu
+
+    let imageUrl = null;
+
+    if (req.file) {
+      const upload = await cloudinary.uploader.upload(req.file.path, {
+        folder: "dongym",
+      });
+
+      console.log("FILE DITERIMA:", req.file); // ⬅ cek detail file
+
+      imageUrl = upload.secure_url;
+
+      fs.unlinkSync(req.file.path);
+    }
+
+    req.body.image = imageUrl;
+
     const result = await productService.addProduct(req.body);
+
     res.status(200).json({
       status: "success",
       message: "add products successfully",
-      data: result
+      data: result.data,
     });
   } catch (error) {
     next(error);
@@ -16,10 +37,22 @@ const addProduct = async (req, res, next) => {
 };
 
 
+
 // ===================== UPDATE PRODUCT =====================
 const updateProduct = async (req, res, next) => {
   try {
+    // jika ada file baru → upload ke cloudinary
+    if (req.file) {
+      const upload = await cloudinary.uploader.upload(req.file.path, {
+        folder: "dongym"
+      });
+
+      req.body.image = upload.secure_url;
+      fs.unlinkSync(req.file.path);
+    }
+
     const result = await productService.updateProduct(req.params.id, req.body);
+
     res.status(200).json({
       status: "success",
       message: "update products successfully",
@@ -29,6 +62,7 @@ const updateProduct = async (req, res, next) => {
     next(error);
   }
 };
+
 
 
 

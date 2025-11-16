@@ -13,19 +13,18 @@ const userAbsensi = async (request) => {
     const absensi = await prisma.absensi.create({
       data: {
         name: user.name,
-        IsMember: user.IsMember,
+        isMember: user.isMember, 
         date: user.date,
         status: user.status,
       },
     });
 
-    return {
-      data: absensi,
-    };
+    return { data: absensi };
   } catch (error) {
-    handleError(error)
+    throw handleError(error);  
   }
 };
+
 
 // ===================== UPDATE ABSENSI =====================
 const updateAbsensi = async(request, id) => {
@@ -77,15 +76,16 @@ const getAbsensi = async(request) => {
 // ===================== ERROR HANDLER GLOBAL =====================
 function handleError(error) {
   if (error.name === 'ValidationError') {
-    throw new ResponseError(400, error.message);
+    return new ResponseError(400, error.message);
   }
 
   if (error.code) {
-    throw new ResponseError(500, `Database error: ${error.message}`);
+    return new ResponseError(500, `Database error: ${error.message}`);
   }
 
-  throw new ResponseError(500, error.message || 'Terjadi kesalahan server');
+  return new ResponseError(500, error.message || 'Terjadi kesalahan server');
 }
+
 
 module.exports = {
   userAbsensi,

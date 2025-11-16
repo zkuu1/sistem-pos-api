@@ -1,35 +1,47 @@
 // ========== IMPORT MAIN COMPONENT =============
 const express = require('express');
-const {errorMiddleware} = require('./middleware/error-middleware');
+const { errorMiddleware } = require('./middleware/error-middleware');
 const Logging = require('./logging');
 const dotenv = require('dotenv');
+const cors = require('./utils/cors');
 
-// ========== IMPORT ROUTE & CONFIG =============
+const swaggerUi = require("swagger-ui-express");
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerOptions = require("./utils/swaggerOption");
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+
 const apiRouter = require('./routes/api');
 const publicApiRouter = require('./routes/public-api');
 const logRequest = require('./middleware/logs');
+
 dotenv.config();
 
-// // ========== SERVER =============
-const web = express()
-web.listen(process.env.PORT, () => {
-    Logging.info(`Server is running on port ${process.env.PORT}`);
-});
-web.use(logRequest);
-web.use(express.json())
+// ========== SERVER =============
+const web = express();
 
-// ========== EXPORT API TO SERVER =============
-web.use(apiRouter.userRouter)
-web.use(apiRouter.absensiRouter)
-web.use(publicApiRouter.publicUserRouter)
-web.use(publicApiRouter.publicAbsensiRouter)
+// Middleware HARUS sebelum listen!!!
+web.use(cors);
+web.use(logRequest);
+web.use(express.json());
+web.use(express.urlencoded({ extended: true }));
+
+// Swagger
+web.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// Routes
+web.use(apiRouter.userRouter);
+web.use(apiRouter.absensiRouter);
+web.use(publicApiRouter.publicUserRouter);
+web.use(publicApiRouter.publicAbsensiRouter);
 web.use(publicApiRouter.publicProductRouter);
 web.use(publicApiRouter.publicCategoryRouter);
 
-// ========== MIDDLEWARE =============
+
 web.use(errorMiddleware);
 
-// ========== EXPORT =============
-module.exports = {
-    web
-}
+// ========== LISTEN HARUS TERAKHIR =============
+web.listen(process.env.PORT, () => {
+    Logging.info(`Server is running on port ${process.env.PORT}`);
+});
+
+module.exports = { web };
