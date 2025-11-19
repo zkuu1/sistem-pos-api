@@ -1,5 +1,5 @@
 const { validate } = require('../validation/validation');
-const { CategoryValidation } = require('../validation/category-validation')
+const { CategoryValidation, searchCategoryValidation } = require('../validation/category-validation')
 const prisma = require('../client/prisma');
 const ResponseError = require('../error/response-error');
 
@@ -20,6 +20,43 @@ const addCategory = async(request) => {
        handleError(error);
  }
 }
+
+// ===================== SEACRH CATEGORY =====================
+const searchCategory = async (request) => {
+  try {
+    const search = validate(searchCategoryValidation, request);
+
+    const categories = await prisma.category.findMany({
+      where: {
+        OR: [
+          { name: { contains: search.keyword, mode: 'insensitive' } },
+         
+          // { id: { contains: search.keyword, mode: 'insensitive' } }
+        ]
+      },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        products: true
+        
+      }
+    });
+
+    if (categories.length === 0) {
+      throw new ResponseError(404, 'No product found');
+    }
+
+    return categories;
+
+  } catch (error) {
+    throw handleError(error);
+  }
+};
+
+
+
+
 
 // ===================== UPDATE CATEGORY =====================
 const updateCategory = async(id, request) => {
@@ -86,5 +123,6 @@ module.exports = {
     addCategory,
     updateCategory,
     deleteCategory,
-    getCategory
+    getCategory,
+    searchCategory
 }

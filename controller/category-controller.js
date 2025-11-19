@@ -13,6 +13,18 @@ const addCategory = async(req,res,next) => {
     }    
 }
 
+const searchCategory = async (req, res, next) => {
+  try {
+    const result = await categoryService.searchCategory({ keyword: req.params.keyword });
+    res.status(200).json({
+      message: 'Successfully searched category',
+      data: result
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const updateCategory = async(req, res, next) => {
     try {
         const result = await categoryService.updateCategory(req.params.id, req.body);
@@ -56,5 +68,6 @@ module.exports = {
     addCategory,
     deleteCategory,
     updateCategory,
-    getAllCategory
+    getAllCategory,
+    searchCategory
 }

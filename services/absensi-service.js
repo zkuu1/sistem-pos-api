@@ -1,5 +1,5 @@
 const { validate } = require('../validation/validation');
-const { AbsensiValidation } = require('../validation/absensi-validation');
+const { AbsensiValidation, searchAbsensiValidation } = require('../validation/absensi-validation');
 const prisma = require('../client/prisma');
 const ResponseError = require('../error/response-error');
 console.log('DEBUG: ResponseError =', ResponseError);
@@ -40,6 +40,39 @@ const updateAbsensi = async(request, id) => {
     handleError(error)
   }
 }
+
+// ===================== SEARCH ABSENSI =====================
+const searchAbensi = async (request) => {
+  try {
+    const search = validate(searchAbsensiValidation, request);
+
+    const absensi = await prisma.absensi.findMany({
+      where: {
+        OR: [
+          { name: { contains: search.keyword, mode: 'insensitive' } },
+         
+          // { id: { contains: search.keyword, mode: 'insensitive' } }
+        ]
+      },
+      select: {
+        id: true,
+        name: true,
+        date: true,
+        status: true,
+        isMember: true
+      }
+    });
+
+    if (absensi.length === 0) {
+      throw new ResponseError(404, 'No product found');
+    }
+
+    return absensi;
+
+  } catch (error) {
+    throw handleError(error);
+  }
+};
 
 // ===================== DELETE ABSENSI =====================
 const deleteAbsensi = async(id) => {
@@ -91,5 +124,6 @@ module.exports = {
   userAbsensi,
   updateAbsensi,
   deleteAbsensi,
-  getAbsensi
+  getAbsensi,
+  searchAbensi
 };

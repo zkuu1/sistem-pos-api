@@ -63,6 +63,19 @@ const updateProduct = async (req, res, next) => {
   }
 };
 
+// ===================== SEACRH PRODUCT =====================
+const searchProduct = async (req, res, next) => {
+  try {
+    const result = await productService.searchProduct({ keyword: req.params.keyword });
+    res.status(200).json({
+      message: 'Successfully searched product',
+      data: result
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 
 
@@ -99,5 +112,6 @@ module.exports = {
   getAllProduct,
   addProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  searchProduct
 };

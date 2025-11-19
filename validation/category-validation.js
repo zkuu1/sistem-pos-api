@@ -5,6 +5,11 @@ const CategoryValidation = Joi.object({
     description: Joi.string().required()
 })
 
+const searchCategoryValidation = Joi.object({
+    keyword: Joi.string().min(1).required()
+})
+
 module.exports = {
-    CategoryValidation
+    CategoryValidation,
+    searchCategoryValidation
 }

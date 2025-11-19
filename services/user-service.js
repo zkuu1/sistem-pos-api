@@ -1,5 +1,5 @@
 const { validate } = require('../validation/validation');
-const { registerUserValidation, loginUserValidation, getUserValidation} = require('../validation/user-validation');
+const { registerUserValidation, loginUserValidation, getUserValidation, searchUserValidation, updateUserValidation} = require('../validation/user-validation');
 const prisma = require('../client/prisma');
 const ResponseError = require('../error/response-error');
 const bcrypt = require('bcryptjs');
@@ -100,9 +100,101 @@ const getUser = async (name) => {
   return user;
 };
 
+const updateUser = async (id, request) => {
+  try {
+    const update = await validate(updateUserValidation, request)
+
+  const user = await prisma.user.update({
+    where: { id: Number(id) },
+    data: {
+      name: update.name,
+      email: update.email,
+      address: update.address,
+      role: update.role,
+      membership: update.membership,
+    },
+})
+
+  return {
+    data: user
+  }
+  } catch (error) {
+    
+  }
+};
+
+const deleteUser = async (id, request) => {
+  try {
+    const deleted = await prisma.user.delete({
+    where: { id: Number(idUser) },
+  });
+
+  return {
+    data: deleted
+  }
+
+  } catch (error) {
+    handleError(error)
+  }
+};
+
+const searchUser = async (request) => {
+  try {
+    const search = validate(searchUserValidation, request);
+
+    const users = await prisma.user.findMany({
+      where: {
+        OR: [
+          { name: { contains: search.keyword, mode: 'insensitive' } },
+          { email: { contains: search.keyword, mode: 'insensitive' } }
+        ]
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        address: true,
+        image: true
+      }
+    });
+
+    if (users.length === 0) {
+      throw new ResponseError(404, 'No users found');
+    }
+
+    return users;
+
+  } catch (error) {
+    throw handleError(error);
+  }
+};
+
+
+
+// ===================== ERROR HANDLER GLOBAL =====================
+function handleError(error) {
+  if (error.name === 'ValidationError') {
+    return new ResponseError(400, error.message);
+  }
+
+  if (error.code) {
+    return new ResponseError(500, `Database error: ${error.message}`);
+  }
+
+  return new ResponseError(500, error.message || 'Terjadi kesalahan server');
+}
+
+function searchHandleError(error) {
+  throw new ResponseError(404, 'No users found');
+}
+
 
 module.exports = {
   registerUser,
   loginUser,
-  getUser
+  getUser,
+  searchUser,
+  updateUser,
+  deleteUser
 };

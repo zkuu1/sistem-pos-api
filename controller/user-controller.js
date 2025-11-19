@@ -42,10 +42,24 @@ const get = async (req, res, next) => {
   }
 };
 
+const searchUser = async (req, res, next) => {
+  try {
+    const result = await userService.searchUser({ keyword: req.params.keyword });
+    res.status(200).json({
+      message: 'Successfully searched user',
+      data: result
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
 //  Create new user
 const createUser = async (req, res) => {
   try {
-    const newUser = await userModels.createNewUser(req.body);
+    const newUser = await userService.createNewUser(req.body);
     res.status(201).json({
       message: 'Successfully created user',
       data: newUser
@@ -63,9 +77,9 @@ const createUser = async (req, res) => {
 
 //  Update existing user
 const updateUser = async (req, res) => {
-  const { idUser } = req.params;
+  const { id } = req.params;
   try {
-    const updatedUser = await userModels.updateUser(idUser, req.body);
+    const updatedUser = await userService.updateUser(id, req.body);
     res.status(200).json({
       message: 'Successfully updated user',
       data: updatedUser
@@ -81,11 +95,11 @@ const updateUser = async (req, res) => {
 
 //  Delete user
 const deleteUser = async (req, res) => {
-  const { idUser } = req.params;
+  const { id } = req.params;
   try {
-    await userModels.deleteUser(idUser);
+    await userService.deleteUser(id);
     res.status(200).json({
-      message: `Successfully deleted user with id ${idUser}`
+      message: `Successfully deleted user with id ${id}`
     });
   } catch (error) {
     console.error('Error deleting user:', error);
@@ -102,5 +116,6 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  searchUser,
   get
 };

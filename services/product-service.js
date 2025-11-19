@@ -1,5 +1,5 @@
 const { validate } = require('../validation/validation');
-const { ProductValidation } = require('../validation/product-validation');
+const { ProductValidation, searchProductValidation } = require('../validation/product-validation');
 const prisma = require('../client/prisma');
 const ResponseError = require('../error/response-error');
 
@@ -38,6 +38,41 @@ const addProduct = async (request) => {
   }
 };
 
+
+const searchProduct = async (request) => {
+  try {
+    const search = validate(searchProductValidation, request);
+
+    const products = await prisma.product.findMany({
+      where: {
+        OR: [
+          { name: { contains: search.keyword, mode: 'insensitive' } },
+         
+          // { id: { contains: search.keyword, mode: 'insensitive' } }
+        ]
+      },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        price: true,
+        stock: true,
+        categoryId: true,
+        category: true,
+        image: true
+      }
+    });
+
+    if (products.length === 0) {
+      throw new ResponseError(404, 'No product found');
+    }
+
+    return products;
+
+  } catch (error) {
+    throw handleError(error);
+  }
+};
 
 
 // ===================== UPDATE PRODUCT =====================
@@ -120,5 +155,6 @@ module.exports = {
   getProduct,
   addProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  searchProduct
 };

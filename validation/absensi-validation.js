@@ -8,4 +8,8 @@ const AbsensiValidation = Joi.object({
   status: Joi.string().required()
 });
 
-module.exports = { AbsensiValidation };
+const searchAbsensiValidation = Joi.object({
+  keyword: Joi.string().min(1).required()
+})
+
+module.exports = { AbsensiValidation, searchAbsensiValidation };

@@ -27,6 +27,22 @@ const publicAbsensiRouter = express.Router();
  *       201:
  *         description: Absensi berhasil dibuat.
  */
+publicAbsensiRouter.get('/api/absensi/search/:keyword', absensiController.searchAbsensi);
+
+
+/**
+ * @openapi
+ * /api/absensi:
+ *   post:
+ *     summary: Membuat absensi baru
+ *     tags:
+ *       - Absensi
+ *     requestBody:
+ *       required: true
+ *     responses:
+ *       201:
+ *         description: Absensi berhasil dibuat.
+ */
 publicAbsensiRouter.post('/api/absensi', absensiController.absensi);
 
 /**
@@ -97,6 +113,54 @@ publicUserRouter.post('/api/users/register', userController.register);
  */
 publicUserRouter.post('/api/users/login', userController.login);
 
+/**
+ * @openapi
+ * /api/users/update/:id:
+ *   post:
+ *     summary: update user
+ *     tags:
+ *       - User
+ *     requestBody:
+ *       required: true
+ *     responses:
+ *       200:
+ *         description: Update berhasil.
+ */
+publicUserRouter.patch('/api/users/update/:id', userController.updateUser);
+
+/**
+ * @openapi
+ * /api/users/search/:id:
+ *   post:
+ *     summary: searh user
+ *     tags:
+ *       - User
+ *     requestBody:
+ *       required: true
+ *     responses:
+ *       200:
+ *         description: Search berhasil.
+ */
+publicUserRouter.get('/api/users/search/:keyword', userController.searchUser);
+
+
+/**
+ * @openapi
+ * /api/users/update/:id:
+ *   post:
+ *     summary: update user
+ *     tags:
+ *       - User
+ *     requestBody:
+ *       required: true
+ *     responses:
+ *       200:
+ *         description: Update berhasil.
+ */
+publicUserRouter.delete('/api/users/delete/:id', userController.deleteUser);
+
+
+
 
 // ===================== Public Product Router ============================
 const publicProductRouter = express.Router();
@@ -113,6 +177,19 @@ const publicProductRouter = express.Router();
  *         description: OK.
  */
 publicProductRouter.get('/api/products', productController.getAllProduct);
+
+/**
+ * @openapi
+ * /api/products:
+ *   get:
+ *     summary: Mendapatkan produk dicari
+ *     tags:
+ *       - Product
+ *     responses:
+ *       200:
+ *         description: OK.
+ */
+publicProductRouter.get('/api/products/search/:keyword', productController.searchProduct);
 
 /**
  * @openapi
@@ -192,6 +269,19 @@ const publicCategoryRouter = express.Router();
  *         description: OK.
  */
 publicCategoryRouter.get('/api/categories', categoryController.getAllCategory);
+
+/**
+ * @openapi
+ * /api/categories:
+ *   get:
+ *     summary: Mendapatkan semua kategori
+ *     tags:
+ *       - Category
+ *     responses:
+ *       200:
+ *         description: OK.
+ */
+publicCategoryRouter.get('/api/categories/search/:keyword', categoryController.searchCategory);
 
 /**
  * @openapi

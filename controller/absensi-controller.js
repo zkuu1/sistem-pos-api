@@ -15,6 +15,18 @@ const absensi = async(req, res, next) => {
     }
 }
 
+const searchAbsensi = async (req, res, next) => {
+  try {
+    const result = await absensiService.searchAbensi({ keyword: req.params.keyword });
+    res.status(200).json({
+      message: 'Successfully searched absensi',
+      data: result
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const updateAbsensi = async(req, res, next) => {
     try {
         const result = await absensiService.updateAbsensi(req.params.id, req.body)
@@ -63,5 +75,6 @@ module.exports = {
     absensi,
     updateAbsensi,
     deleteAbsensi,
-    getAllAbsensi
+    getAllAbsensi,
+    searchAbsensi
 }
