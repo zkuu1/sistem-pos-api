@@ -1,8 +1,9 @@
 const express = require('express');
-const { authMiddleware } = require('../middleware/auth-middleware');
+const { authMiddleware, adminMiddleware } = require('../middleware/auth-middleware');
 const userController = require('../controller/user-controller');
 const absensiController = require('../controller/absensi-controller');
 
+// Buat router terpisah
 const userRouter = express.Router();
 const absensiRouter = express.Router();
 
@@ -21,6 +22,7 @@ const absensiRouter = express.Router();
  *       401:
  *         description: Token tidak valid atau tidak diberikan.
  */
+// HAPUS adminMiddleware karena endpoint ini untuk semua user yang login
 userRouter.get('/api/users/current', authMiddleware, userController.get);
 
 /**
@@ -40,7 +42,4 @@ userRouter.get('/api/users/current', authMiddleware, userController.get);
  */
 absensiRouter.get('/api/absensi', authMiddleware, absensiController.absensi);
 
-module.exports = {
-  userRouter,
-  absensiRouter
-};
+module.exports = router;

@@ -3,12 +3,8 @@ const { registerUserValidation, loginUserValidation, getUserValidation, searchUs
 const prisma = require('../client/prisma');
 const ResponseError = require('../error/response-error');
 const bcrypt = require('bcryptjs');
-let uuidv4;
+const { v4: uuidv4 } = require('uuid');
 
-(async () => {
-  const { v4 } = await import('uuid');
-  uuidv4 = v4;
-})();
 
 
 const registerUser = async (request) => {
@@ -57,16 +53,13 @@ const loginUser = async (request) => {
     throw new ResponseError(401, 'Email or password is incorrect');
   }
 
-  // Cek password
   const isPasswordValid = await bcrypt.compare(loginRequest.password, user.password);
   if (!isPasswordValid) {
     throw new ResponseError(401, 'Email or password is incorrect');
   }
 
-  // Buat token baru
   const token = uuidv4();
 
-  // Simpan token ke user
   const updatedUser = await prisma.user.update({
     where: { id: user.id },
     data: { token },
@@ -75,6 +68,9 @@ const loginUser = async (request) => {
       name: true,
       email: true,
       token: true,
+      role: true,
+      address: true,
+      image: true
     },
   });
 

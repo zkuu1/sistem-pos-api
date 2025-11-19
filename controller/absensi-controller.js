@@ -1,7 +1,7 @@
 const absensiService = require('../services/absensi-service')
 
 
-// Send Data Absensi
+// ===================== SEND ABSENSI =====================
 const absensi = async(req, res, next) => {
     try {
     const result = await absensiService.userAbsensi(req.body);
@@ -15,6 +15,7 @@ const absensi = async(req, res, next) => {
     }
 }
 
+// ===================== SEARCH ABSENSI =====================
 const searchAbsensi = async (req, res, next) => {
   try {
     const result = await absensiService.searchAbensi({ keyword: req.params.keyword });
@@ -27,6 +28,7 @@ const searchAbsensi = async (req, res, next) => {
   }
 };
 
+// ===================== UPDATE ABSENSI =====================
 const updateAbsensi = async(req, res, next) => {
     try {
         const result = await absensiService.updateAbsensi(req.params.id, req.body)
@@ -40,6 +42,7 @@ const updateAbsensi = async(req, res, next) => {
     }
 }
 
+// ===================== DELETE ABSENSI =====================
 const deleteAbsensi = async (req, res, next) => {
     try {
         const result = await absensiService.deleteAbsensi(req.params.id);
@@ -53,7 +56,7 @@ const deleteAbsensi = async (req, res, next) => {
     }
 }
 
-// Get Data Absensi
+// ===================== GET ALL ABSENSI =====================
 const getAllAbsensi = async(req, res) => {
     try {
         const result = await absensiService.getAbsensi(req.body);

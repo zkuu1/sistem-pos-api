@@ -2,6 +2,7 @@ const userModels = require('../models/users');
 const userService = require('../services/user-service');
 
 
+// =====================  REGISTER =====================
 const register = async (req, res, next) => {
     try {
       const result = await userService.registerUser(req.body);
@@ -14,6 +15,7 @@ const register = async (req, res, next) => {
     }
 }
 
+// ===================== LOGIN =====================
 const login = async (req, res, next) => {
    try {
     const result = await userService.loginUser(req.body);
@@ -26,22 +28,19 @@ const login = async (req, res, next) => {
    }
 }
 
+// ===================== GET ALL USERS =====================
 const get = async (req, res, next) => {
   try {
-    // Ambil data user dari middleware auth
-    const user = req.user;
-
-    // Panggil service dengan nama user
-    const result = await userService.getUser(user.name);
-
     res.status(200).json({
-      data: result
+      data: req.user
     });
   } catch (error) {
     next(error);
   }
 };
 
+
+// ===================== SEARCH USERS =====================
 const searchUser = async (req, res, next) => {
   try {
     const result = await userService.searchUser({ keyword: req.params.keyword });
@@ -54,9 +53,7 @@ const searchUser = async (req, res, next) => {
   }
 };
 
-
-
-//  Create new user
+// ===================== CREATE USER BY ADMIN =====================
 const createUser = async (req, res) => {
   try {
     const newUser = await userService.createNewUser(req.body);
@@ -73,9 +70,7 @@ const createUser = async (req, res) => {
   }
 };
 
-
-
-//  Update existing user
+// ===================== UPDATE USER BY ADMIN =====================
 const updateUser = async (req, res) => {
   const { id } = req.params;
   try {
@@ -93,7 +88,7 @@ const updateUser = async (req, res) => {
   }
 };
 
-//  Delete user
+// ===================== DELETE USER BY ADMIN =====================
 const deleteUser = async (req, res) => {
   const { id } = req.params;
   try {

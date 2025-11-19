@@ -1,5 +1,7 @@
 const categoryService = require('../services/category-service');
 
+
+// ===================== ADD CATEGORY =====================
 const addCategory = async(req,res,next) => {
     try {
         const result = await categoryService.addCategory(req.body);
@@ -13,6 +15,7 @@ const addCategory = async(req,res,next) => {
     }    
 }
 
+// ===================== SEARCH CATEGORY =====================
 const searchCategory = async (req, res, next) => {
   try {
     const result = await categoryService.searchCategory({ keyword: req.params.keyword });
@@ -25,6 +28,7 @@ const searchCategory = async (req, res, next) => {
   }
 };
 
+// ===================== UPDATE CATEGORY =====================
 const updateCategory = async(req, res, next) => {
     try {
         const result = await categoryService.updateCategory(req.params.id, req.body);
@@ -38,6 +42,7 @@ const updateCategory = async(req, res, next) => {
     }
 }
 
+// ===================== DELETE CATEGORY =====================
 const deleteCategory = async(req, res, next) => {
     try {
         const result = await categoryService.deleteCategory(req.params.id);
@@ -51,6 +56,7 @@ const deleteCategory = async(req, res, next) => {
     }
 }
 
+// ===================== GET ALL CATEGORY =====================
 const getAllCategory = async(req, res, next) => {
     try {
         const result = await categoryService.getCategory(req.body);

@@ -37,7 +37,6 @@ const addProduct = async (req, res, next) => {
 };
 
 
-
 // ===================== UPDATE PRODUCT =====================
 const updateProduct = async (req, res, next) => {
   try {
@@ -52,7 +51,6 @@ const updateProduct = async (req, res, next) => {
     }
 
     const result = await productService.updateProduct(req.params.id, req.body);
-
     res.status(200).json({
       status: "success",
       message: "update products successfully",
@@ -75,8 +73,6 @@ const searchProduct = async (req, res, next) => {
     next(error);
   }
 };
-
-
 
 
 // ===================== DELETE PRODUCT =====================

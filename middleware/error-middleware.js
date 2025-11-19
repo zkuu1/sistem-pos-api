@@ -1,8 +1,5 @@
 const ResponseError = require('../error/response-error');
 
-
-
-
 const errorMiddleware = async(err, req, res, next) => {
     if(!err) {
         next();
