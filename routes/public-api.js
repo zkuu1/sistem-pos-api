@@ -210,13 +210,14 @@ publicProductRouter.post(
     console.log("➡️  Route /api/products dipanggil");
     next();
   },
-  upload.single("image"),
+  upload.single("image"),   
   (req, res, next) => {
     console.log("📌 Setelah Multer, req.file =", req.file);
     next();
   },
   productController.addProduct
 );
+
 
 
 /**
