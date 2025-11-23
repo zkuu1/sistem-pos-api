@@ -4,35 +4,28 @@ const cloudinary = require('../utils/cloudinaryUpload');
 
 
 // ===================== ADD PRODUCT =====================
-const addProduct = async (req, res, next) => {
+const addProduct = async (req, res) => {
   try {
-    console.log("REQ.FILE:", req.file); // ⬅ cek dulu
-
-    let imageUrl = null;
-
-    if (req.file) {
-      const upload = await cloudinary.uploader.upload(req.file.path, {
-        folder: "dongym",
-      });
-
-      console.log("FILE DITERIMA:", req.file); // ⬅ cek detail file
-
-      imageUrl = upload.secure_url;
-
-      fs.unlinkSync(req.file.path);
+    if (!req.file) {
+      return res.status(400).json({ error: "Image required" });
     }
 
-    req.body.image = imageUrl;
+    const uploadStream = cloudinary.uploader.upload_stream(
+      { folder: "products" },
+      (error, result) => {
+        if (error) return res.status(500).json({ error: error.message });
 
-    const result = await productService.addProduct(req.body);
+        return res.json({
+          message: "Product created",
+          imageUrl: result.secure_url,
+        });
+      }
+    );
 
-    res.status(200).json({
-      status: "success",
-      message: "add products successfully",
-      data: result.data,
-    });
-  } catch (error) {
-    next(error);
+    uploadStream.end(req.file.buffer);
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
 

@@ -205,16 +205,20 @@ publicProductRouter.get('/api/products/search/:keyword', productController.searc
  *         description: Produk berhasil ditambahkan.
  */
 publicProductRouter.post(
-  '/api/products',
+  "/api/products",
+
   (req, res, next) => {
-    console.log("➡️  Route /api/products dipanggil");
+    console.log("➡️ Route /api/products dipanggil");
     next();
   },
-  upload.single("image"),   
+
+  upload.single("image"), // PAKAI memoryStorage() JUGA
+
   (req, res, next) => {
     console.log("📌 Setelah Multer, req.file =", req.file);
     next();
   },
+
   productController.addProduct
 );
 
