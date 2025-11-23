@@ -19,7 +19,7 @@ dotenv.config();
 // ========== SERVER =============
 const web = express();
 
-// Middleware HARUS sebelum listen!!!
+// Middleware
 web.use(cors);
 web.use(logRequest);
 web.use(express.json());
@@ -28,12 +28,11 @@ web.use(express.urlencoded({ extended: true }));
 // Swagger
 web.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// ========== PERBAIKAN ROUTES =============
-// Gunakan prefix yang jelas untuk membedakan public vs private routes
-web.use('', apiRouter.userRouter);        // Private user routes
-web.use('', apiRouter.absensiRouter);     // Private absensi routes
+// Private routes
+web.use('', apiRouter.userRouter);
+web.use('', apiRouter.absensiRouter);
 
-// Public routes - biasanya tanpa auth
+// Public routes
 web.use('/', publicApiRouter.publicUserRouter);
 web.use('', publicApiRouter.publicAbsensiRouter);
 web.use('', publicApiRouter.publicProductRouter);
@@ -41,9 +40,4 @@ web.use('', publicApiRouter.publicCategoryRouter);
 
 web.use(errorMiddleware);
 
-// ========== LISTEN HARUS TERAKHIR =============
-web.listen(process.env.PORT, () => {
-    Logging.info(`Server is running on port ${process.env.PORT}`);
-});
-
-module.exports = { web };
+module.exports = web;  
