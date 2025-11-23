@@ -77,6 +77,12 @@ const loginUser = async (request) => {
   return updatedUser;
 };
 
+const getAllUsers = async () => {
+  return prisma.user.findMany({
+  });
+};
+
+
 const getUser = async (name) => {
   const request = validate(getUserValidation, { name });
 
@@ -119,20 +125,19 @@ const updateUser = async (id, request) => {
   }
 };
 
-const deleteUser = async (id, request) => {
+const deleteUser = async (id) => {
   try {
     const deleted = await prisma.user.delete({
-    where: { id: Number(idUser) },
-  });
+      where: { id: Number(id) },   // ← ini yang benar
+    });
 
-  return {
-    data: deleted
-  }
+    return { data: deleted };
 
   } catch (error) {
-    handleError(error)
+    throw error; // jangan swallow error
   }
 };
+
 
 const searchUser = async (request) => {
   try {
@@ -187,6 +192,7 @@ function searchHandleError(error) {
 
 
 module.exports = {
+  getAllUsers,
   registerUser,
   loginUser,
   getUser,

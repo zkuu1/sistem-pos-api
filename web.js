@@ -30,14 +30,14 @@ web.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // ========== PERBAIKAN ROUTES =============
 // Gunakan prefix yang jelas untuk membedakan public vs private routes
-web.use('/api', apiRouter.userRouter);        // Private user routes
-web.use('/api', apiRouter.absensiRouter);     // Private absensi routes
+web.use('', apiRouter.userRouter);        // Private user routes
+web.use('', apiRouter.absensiRouter);     // Private absensi routes
 
 // Public routes - biasanya tanpa auth
-web.use('/api/public', publicApiRouter.publicUserRouter);
-web.use('/api/public', publicApiRouter.publicAbsensiRouter);
-web.use('/api/public', publicApiRouter.publicProductRouter);
-web.use('/api/public', publicApiRouter.publicCategoryRouter);
+web.use('/', publicApiRouter.publicUserRouter);
+web.use('', publicApiRouter.publicAbsensiRouter);
+web.use('', publicApiRouter.publicProductRouter);
+web.use('', publicApiRouter.publicCategoryRouter);
 
 web.use(errorMiddleware);
 

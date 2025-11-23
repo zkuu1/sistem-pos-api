@@ -29,10 +29,11 @@ const login = async (req, res, next) => {
 }
 
 // ===================== GET ALL USERS =====================
-const get = async (req, res, next) => {
+const getAllUser = async (req, res, next) => {
   try {
+    const result = await userService.getAllUsers()
     res.status(200).json({
-      data: req.user
+      data: result
     });
   } catch (error) {
     next(error);
@@ -49,9 +50,24 @@ const searchUser = async (req, res, next) => {
       data: result
     });
   } catch (error) {
-    next(error);
+    console.error("SearchUser Error:", error);
+
+    // Kalau instance ResponseError, pakai statusnya
+    if (error instanceof ResponseError) {
+      return res.status(error.statusCode || 500).json({
+        success: false,
+        message: error.message || 'Server error'
+      });
+    }
+
+    // Default
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    });
   }
 };
+
 
 // ===================== CREATE USER BY ADMIN =====================
 const createUser = async (req, res) => {
@@ -112,5 +128,5 @@ module.exports = {
   updateUser,
   deleteUser,
   searchUser,
-  get
+  getAllUser
 };

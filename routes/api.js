@@ -9,7 +9,7 @@ const absensiRouter = express.Router();
 
 /**
  * @openapi
- * /api/users/current:
+ * /api/users:
  *   get:
  *     summary: Mendapatkan data user yang sedang login
  *     tags:
@@ -23,7 +23,7 @@ const absensiRouter = express.Router();
  *         description: Token tidak valid atau tidak diberikan.
  */
 // HAPUS adminMiddleware karena endpoint ini untuk semua user yang login
-userRouter.get('/api/users/current', authMiddleware, userController.get);
+userRouter.get('/api/users', userController.getAllUser);
 
 /**
  * @openapi
@@ -40,6 +40,9 @@ userRouter.get('/api/users/current', authMiddleware, userController.get);
  *       401:
  *         description: Unauthorized, token tidak valid.
  */
-absensiRouter.get('/api/absensi', authMiddleware, absensiController.absensi);
+absensiRouter.get('/api/absensi',absensiController.getAllAbsensi);
 
-module.exports = router;
+module.exports = {
+    userRouter,
+    absensiRouter
+}

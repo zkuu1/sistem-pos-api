@@ -60,7 +60,7 @@ publicAbsensiRouter.post('/api/absensi', absensiController.absensi);
  *       200:
  *         description: Absensi berhasil diperbarui.
  */
-publicAbsensiRouter.patch('/api/absensi/:id', absensiController.updateAbsensi);
+publicAbsensiRouter.patch('/api/absensi/update/:id', absensiController.updateAbsensi);
 
 /**
  * @openapi
@@ -234,7 +234,7 @@ publicProductRouter.post(
  *       200:
  *         description: Produk berhasil diperbarui.
  */
-publicProductRouter.patch('/api/products/:id', upload.single("image"), productController.updateProduct);
+publicProductRouter.patch('/api/products/update/:id', upload.single("image"), productController.updateProduct);
 
 /**
  * @openapi
@@ -313,7 +313,7 @@ publicCategoryRouter.post('/api/categories', categoryController.addCategory);
  *       200:
  *         description: Kategori berhasil diperbarui.
  */
-publicCategoryRouter.patch('/api/categories/:id', categoryController.updateCategory);
+publicCategoryRouter.patch('/api/categories/update/:id', categoryController.updateCategory);
 
 /**
  * @openapi
