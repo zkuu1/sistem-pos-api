@@ -1,5 +1,5 @@
 const { validate } = require('../validation/validation');
-const { registerUserValidation, loginUserValidation, getUserValidation, searchUserValidation, updateUserValidation} = require('../validation/user-validation');
+const { registerUserValidation, loginUserValidation, getUserValidation, searchUserValidation, updateUserValidation, getUserByIdValidation} = require('../validation/user-validation');
 const prisma = require('../client/prisma');
 const ResponseError = require('../error/response-error');
 const bcrypt = require('bcryptjs');
@@ -138,7 +138,7 @@ const deleteUser = async (id) => {
   }
 };
 
-
+// ===================== SEARCH USER BY NAME =====================
 const searchUser = async (request) => {
   try {
     const search = validate(searchUserValidation, request);
@@ -171,6 +171,34 @@ const searchUser = async (request) => {
   }
 };
 
+// ===================== GET USER BY ID =====================
+const getUserById = async (id) => {
+  try {
+    const request = validate( getUserByIdValidation, { id });
+
+    const user = await prisma.user.findUnique({
+      where: { id: Number(request.id) },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        address: true,
+        image: true,
+        membership: true
+      }
+    });
+
+    if (!user) {
+      throw new ResponseError(404, "User not found");
+    }
+
+    return user;
+
+  } catch (error) {
+    throw handleError(error);
+  }
+};
 
 
 // ===================== ERROR HANDLER GLOBAL =====================

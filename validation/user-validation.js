@@ -9,6 +9,10 @@ const registerUserValidation = Joi.object({
     membership: Joi.string().valid('non_member', 'member').optional(),
 });
 
+const getUserByIdValidation = Joi.object({
+  id: Joi.number().required(),
+});
+
 const loginUserValidation = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().min(6).required(),
@@ -35,5 +39,6 @@ module.exports = {
     loginUserValidation,
     getUserValidation,
     searchUserValidation,
-    updateUserValidation
+    updateUserValidation,
+    getUserByIdValidation
 }

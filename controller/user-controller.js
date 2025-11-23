@@ -40,6 +40,34 @@ const getAllUser = async (req, res, next) => {
   }
 };
 
+// ===================== GET USER BY ID =====================
+const getUserById = async (req, res, next) => {
+  try {
+    const result = await userService.getUserById(req.params.id);
+
+    res.status(200).json({
+      message: 'Successfully retrieved user',
+      data: result
+    });
+
+  } catch (error) {
+    console.error("GetUserById Error:", error);
+
+    if (error instanceof ResponseError) {
+      return res.status(error.statusCode || 500).json({
+        success: false,
+        message: error.message
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    });
+  }
+};
+
+
 
 // ===================== SEARCH USERS =====================
 const searchUser = async (req, res, next) => {
@@ -128,5 +156,7 @@ module.exports = {
   updateUser,
   deleteUser,
   searchUser,
-  getAllUser
+  getAllUser,
+  getUserById,
+
 };

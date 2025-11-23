@@ -143,6 +143,22 @@ publicUserRouter.patch('/api/users/update/:id', userController.updateUser);
  */
 publicUserRouter.get('/api/users/search/:keyword', userController.searchUser);
 
+/**
+ * @openapi
+ * /api/users/search/:id:
+ *   post:
+ *     summary: searh user
+ *     tags:
+ *       - User
+ *     requestBody:
+ *       required: true
+ *     responses:
+ *       200:
+ *         description: Search berhasil.
+ */
+publicUserRouter.get('/api/users/:id', userController.getUserById);
+
+
 
 /**
  * @openapi
