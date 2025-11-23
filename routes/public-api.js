@@ -76,7 +76,7 @@ publicAbsensiRouter.post('/api/absensi', absensiController.absensi);
  *       200:
  *         description: Absensi berhasil diperbarui.
  */
-publicAbsensiRouter.patch('/api/absensi/:id', absensiController.getAbsensiById);
+publicAbsensiRouter.get('/api/absensi/:id', absensiController.getAbsensiById);
 
 /**
  * @openapi
