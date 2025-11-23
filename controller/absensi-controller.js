@@ -16,27 +16,32 @@ const absensi = async(req, res, next) => {
 }
 // ===================== GET ABSENSI BY ID =====================
 const getAbsensiById = async (req, res, next) => {
-    try {
-        const result = await absensiService.getAbsensiById(req.params.id)
-        res.status(200).json({
-            message: 'Successfully retrieved absensi',
-            data: result
-        })
-    } catch (error) {
-    console.error("GetProductById Error:", error);
+  try {
+    const result = await absensiService.getAbsensiById(req.params.id);
+
+    return res.status(200).json({
+      success: true,
+      message: 'Successfully retrieved absensi',
+      data: result
+    });
+
+  } catch (error) {
+    console.error("GetAbsensiById Error:", error);
 
     if (error instanceof ResponseError) {
-      return res.status(error.statusCode || 500).json({
+      return res.status(error.statusCode).json({
         success: false,
         message: error.message
       });
     }
-    res.status(500).json({
+
+    return res.status(500).json({
       success: false,
-      message: 'Internal server error'
+      message: "Internal server error"
     });
-    }
-}
+  }
+};
+
 
 
 // ===================== SEARCH ABSENSI =====================
