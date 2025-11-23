@@ -45,7 +45,7 @@ const updateProduct = async (req, res, next) => {
 
     const result = await productService.updateProduct(req.params.id, req.body);
     res.status(200).json({
-      status: "success",
+      status: true,
       message: "update products successfully",
       data: result
     });

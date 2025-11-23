@@ -107,7 +107,7 @@ const updateProduct = async(id, request) => {
     const product = validate(ProductValidation, request);
 
     const update = await prisma.product.update({
-      where: { id: Number(id) },
+      where: { id: Number(product.id) },
       data: {
         name: product.name,
         description: product.description,

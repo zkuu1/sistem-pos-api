@@ -82,7 +82,11 @@ const updateCategory = async(id, request) => {
     try {
         const category = await validate(CategoryValidation, request);
         const update = await prisma.category.update({
-        where: { id:Number(id) }
+        where: { id:Number(id) },
+        data: {
+          name: category.name,
+          description: category.description
+        }
     })
 
     return {

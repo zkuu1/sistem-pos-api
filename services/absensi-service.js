@@ -31,7 +31,12 @@ const updateAbsensi = async(request, id) => {
   try {
     const absensi = await validate(AbsensiValidation, request);
     const update = await prisma.absensi.update({
-    where: { id:Number(id) }
+    where: { id:Number(id) },
+     data: {
+      name: absensi.name,
+      date: absensi.date,
+      status: absensi.status
+    },
   })
   return {
     data: update
