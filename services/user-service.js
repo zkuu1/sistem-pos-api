@@ -226,5 +226,6 @@ module.exports = {
   getUser,
   searchUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  getUserById
 };
