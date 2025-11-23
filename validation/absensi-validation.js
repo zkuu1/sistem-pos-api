@@ -12,4 +12,8 @@ const searchAbsensiValidation = Joi.object({
   keyword: Joi.string().min(1).required()
 })
 
-module.exports = { AbsensiValidation, searchAbsensiValidation };
+const getAbsensiByIdValidation = Joi.object({
+  id: Joi.number().required()
+})
+
+module.exports = { AbsensiValidation, searchAbsensiValidation, getAbsensiByIdValidation };

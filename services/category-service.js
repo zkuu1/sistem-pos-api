@@ -1,5 +1,5 @@
 const { validate } = require('../validation/validation');
-const { CategoryValidation, searchCategoryValidation } = require('../validation/category-validation')
+const { CategoryValidation, searchCategoryValidation, getCategoryByIdValidation } = require('../validation/category-validation')
 const prisma = require('../client/prisma');
 const ResponseError = require('../error/response-error');
 
@@ -54,8 +54,27 @@ const searchCategory = async (request) => {
   }
 };
 
+// ===================== GET CATEGORY BY ID =====================
+  const getCategoryById = async(id) => {
+    try {
+      const request = validate(getCategoryByIdValidation, {id});
+      const category = await prisma.category.findUnique({
+        where: {id: Number(request.id)},
+        select: {
+          name: true,
+          description: true,
+        }
+      })
 
+      if(!category) {
+        throw ResponseError (404, "Category not found")
+      }
 
+      return category
+    } catch (error) {
+      handleError(error)
+    }
+  }
 
 
 // ===================== UPDATE CATEGORY =====================
@@ -121,6 +140,7 @@ function handleError(error) {
 
 module.exports = {
     addCategory,
+    getCategoryById,
     updateCategory,
     deleteCategory,
     getCategory,

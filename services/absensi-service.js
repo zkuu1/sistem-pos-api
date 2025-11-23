@@ -1,5 +1,5 @@
 const { validate } = require('../validation/validation');
-const { AbsensiValidation, searchAbsensiValidation } = require('../validation/absensi-validation');
+const { AbsensiValidation, searchAbsensiValidation, getAbsensiByIdValidation } = require('../validation/absensi-validation');
 const prisma = require('../client/prisma');
 const ResponseError = require('../error/response-error');
 console.log('DEBUG: ResponseError =', ResponseError);
@@ -40,6 +40,30 @@ const updateAbsensi = async(request, id) => {
     handleError(error)
   }
 }
+
+// ===================== GET ABSENSI BY ID =====================
+  const getAbsensiById = async(id) => {
+    try {
+      const request = validate(getAbsensiByIdValidation,{id});
+      const absensi = await prisma.absensi.findUnique({
+        where: {id: Number(request.id)},
+        select: {
+          name: true,
+          date: true,
+          status: true,
+          isMember: false
+        }
+      })
+
+      if(!absensi) {
+        throw ResponseError(404, "Absensi not found")
+      }
+      return absensi
+    } catch (error) {
+      handleError(error)
+    }
+  }
+
 
 // ===================== SEARCH ABSENSI =====================
 const searchAbensi = async (request) => {
@@ -122,6 +146,7 @@ function handleError(error) {
 
 module.exports = {
   userAbsensi,
+  getAbsensiById,
   updateAbsensi,
   deleteAbsensi,
   getAbsensi,

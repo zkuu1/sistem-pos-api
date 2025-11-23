@@ -60,7 +60,23 @@ publicAbsensiRouter.post('/api/absensi', absensiController.absensi);
  *       200:
  *         description: Absensi berhasil diperbarui.
  */
-publicAbsensiRouter.patch('/api/absensi/update/:id', absensiController.updateAbsensi);
+
+/**
+ * @openapi
+ * /api/absensi/{id}:
+ *   patch:
+ *     summary: Update data absensi
+ *     tags:
+ *       - Absensi
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Absensi berhasil diperbarui.
+ */
+publicAbsensiRouter.patch('/api/absensi/:id', absensiController.getAbsensiById);
 
 /**
  * @openapi
@@ -210,6 +226,21 @@ publicProductRouter.get('/api/products/search/:keyword', productController.searc
 /**
  * @openapi
  * /api/products:
+ *   get:
+ *     summary: Mendapatkan produk dicari
+ *     tags:
+ *       - Product
+ *     responses:
+ *       200:
+ *         description: OK.
+ */
+publicProductRouter.get('/api/products/:id', productController.getProductById);
+
+
+
+/**
+ * @openapi
+ * /api/products:
  *   post:
  *     summary: Menambah produk
  *     tags:
@@ -303,6 +334,19 @@ publicCategoryRouter.get('/api/categories', categoryController.getAllCategory);
  *         description: OK.
  */
 publicCategoryRouter.get('/api/categories/search/:keyword', categoryController.searchCategory);
+
+/**
+ * @openapi
+ * /api/categories:
+ *   get:
+ *     summary: Mendapatkan semua kategori
+ *     tags:
+ *       - Category
+ *     responses:
+ *       200:
+ *         description: OK.
+ */
+publicCategoryRouter.get('/api/categories/:id', categoryController.getCategoryById);
 
 /**
  * @openapi

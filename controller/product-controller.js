@@ -67,6 +67,31 @@ const searchProduct = async (req, res, next) => {
   }
 };
 
+// ===================== GET PRODUCT BY ID =====================
+const getProductById = async(req, res, next) => {
+  try {
+    const result = await productService.getProductById(req.params.id);
+    res.status(200).json({
+      message: 'Successfully retrieved product',
+      data: result
+    })
+  } catch (error) {
+     console.error("GetProductById Error:", error);
+
+    if (error instanceof ResponseError) {
+      return res.status(error.statusCode || 500).json({
+        success: false,
+        message: error.message
+      });
+    }
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    });
+    
+  }
+}
+
 
 // ===================== DELETE PRODUCT =====================
 const deleteProduct = async (req, res, next) => {
@@ -100,6 +125,7 @@ const getAllProduct = async (req, res, next) => {
 module.exports = {
   getAllProduct,
   addProduct,
+  getProductById,
   updateProduct,
   deleteProduct,
   searchProduct

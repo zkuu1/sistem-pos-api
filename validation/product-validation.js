@@ -13,8 +13,13 @@ const searchProductValidation = Joi.object({
   keyword: Joi.string().min(1).required()
 });
 
+const getProductByIdValidation = Joi.object({
+  id: Joi.number().required(),
+})
+
 
 module.exports = {
     ProductValidation,
-    searchProductValidation
+    searchProductValidation,
+    getProductByIdValidation
 }

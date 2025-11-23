@@ -14,6 +14,30 @@ const absensi = async(req, res, next) => {
         next(error)
     }
 }
+// ===================== GET ABSENSI BY ID =====================
+const getAbsensiById = async (req, res, next) => {
+    try {
+        const result = await absensiService.getAbsensiById(req.params.id)
+        res.status(200).json({
+            message: 'Successfully retrieved absensi',
+            data: result
+        })
+    } catch (error) {
+    console.error("GetProductById Error:", error);
+
+    if (error instanceof ResponseError) {
+      return res.status(error.statusCode || 500).json({
+        success: false,
+        message: error.message
+      });
+    }
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    });
+    }
+}
+
 
 // ===================== SEARCH ABSENSI =====================
 const searchAbsensi = async (req, res, next) => {
@@ -76,6 +100,7 @@ const getAllAbsensi = async(req, res) => {
 
 module.exports = {
     absensi,
+    getAbsensiById,
     updateAbsensi,
     deleteAbsensi,
     getAllAbsensi,

@@ -15,6 +15,30 @@ const addCategory = async(req,res,next) => {
     }    
 }
 
+// ===================== GET CATEGORY BY ID =====================
+const getCategoryById = async(req,res,next) => {
+    try {
+        const result = await categoryService.getCategoryById(req.params.id);
+        res.status(200).json({
+        message: 'Successfully retrieved category',
+        data: result
+    })
+    } catch (error) {
+       
+    if (error instanceof ResponseError) {
+      return res.status(error.statusCode || 500).json({
+        success: false,
+        message: error.message
+      });
+    }
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    });
+    }
+}
+
+
 // ===================== SEARCH CATEGORY =====================
 const searchCategory = async (req, res, next) => {
   try {
@@ -72,6 +96,7 @@ const getAllCategory = async(req, res, next) => {
 
 module.exports = {
     addCategory,
+    getCategoryById,
     deleteCategory,
     updateCategory,
     getAllCategory,

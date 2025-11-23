@@ -9,7 +9,12 @@ const searchCategoryValidation = Joi.object({
     keyword: Joi.string().min(1).required()
 })
 
+const getCategoryByIdValidation = Joi.object({
+    id: Joi.number().required()
+})
+
 module.exports = {
     CategoryValidation,
-    searchCategoryValidation
+    searchCategoryValidation,
+    getCategoryByIdValidation
 }
