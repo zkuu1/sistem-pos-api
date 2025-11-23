@@ -62,28 +62,39 @@ const updateAbsensi = async(req, res, next) => {
     try {
         const result = await absensiService.updateAbsensi(req.params.id, req.body)
         res.status(200).json({
-            status: 'success',
+            status: true,
             message: 'update absensi successfully',
             data: result
         })
     } catch (error) {
-        next(error)
+        res.status(500).json({
+      success: false,                          
+      message: "Gagal update absensi",
+      error: error.message
+    });
     }
 }
 
 // ===================== DELETE ABSENSI =====================
 const deleteAbsensi = async (req, res, next) => {
-    try {
-        const result = await absensiService.deleteAbsensi(req.params.id);
-        res.status(200).json({
-            status: 'success',
-            message: 'delete absensi successfully',
-            data: result
-        })
-    } catch (error) {
-        next(error)
-    }
-}
+  try {
+    const result = await absensiService.deleteAbsensi(req.params.id);
+
+    res.status(200).json({
+      success: true,                           
+      message: "Absensi berhasil dihapus",
+      data: result
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,                          
+      message: "Gagal menghapus absensi",
+      error: error.message
+    });
+  }
+};
+
 
 // ===================== GET ALL ABSENSI =====================
 const getAllAbsensi = async(req, res) => {

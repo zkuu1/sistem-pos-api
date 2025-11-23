@@ -81,6 +81,23 @@ publicAbsensiRouter.get('/api/absensi/:id', absensiController.getAbsensiById);
 /**
  * @openapi
  * /api/absensi/{id}:
+ *   patch:
+ *     summary: Update data absensi
+ *     tags:
+ *       - Absensi
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Absensi berhasil diperbarui.
+ */
+publicAbsensiRouter.patch('/api/absensi/update/:id', absensiController.updateAbsensi);
+
+/**
+ * @openapi
+ * /api/absensi/{id}:
  *   delete:
  *     summary: Hapus data absensi
  *     tags:
