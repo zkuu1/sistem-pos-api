@@ -5,7 +5,9 @@
   "scripts": {
     "start": "nodemon web.js",
     "seed": "npx prisma db seed",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "build": "prisma generate",
+    "postinstall": "prisma generate"
   },
   "prisma": {
     "seed": "node db/seeders.js"
