@@ -42,27 +42,29 @@ const updateAbsensi = async(request, id) => {
 }
 
 // ===================== GET ABSENSI BY ID =====================
-  const getAbsensiById = async(id) => {
-    try {
-      const request = validate(getAbsensiByIdValidation,{id});
-      const absensi = await prisma.absensi.findUnique({
-        where: {id: Number(request.id)},
-        select: {
-          name: true,
-          date: true,
-          status: true,
-          isMember: false
-        }
-      })
+const getAbsensiById = async (id) => {
+  try {
+    const request = validate(getAbsensiByIdValidation, { id });
 
-      if(!absensi) {
-        throw ResponseError(404, "Absensi not found")
+    const absensi = await prisma.absensi.findUnique({
+      where: { id: Number(request.id) },
+      select: {
+        name: true,
+        date: true,
+        status: true
       }
-      return absensi
-    } catch (error) {
-      handleError(error)
+    });
+
+    if (!absensi) {
+      throw ResponseError(404, "Absensi not found");
     }
+
+    return absensi;
+
+  } catch (error) {
+    handleError(error);
   }
+};
 
 
 // ===================== SEARCH ABSENSI =====================
